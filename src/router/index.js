@@ -1,53 +1,50 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Dashboard from "@/components/home/MainMenu/Dashboard";
+import Dashboard from "../views/home/MainMenu/Dashboard";
+import Sign from "../views/Sign";
+import Home from "../Home";
+import $store from '../store'
+import {getAdminInfo} from "../network/adminApi";
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path:'/',
-    component:Dashboard
+    path: '/',
+    component:Sign,
+    name:'Login'
   },
+
+
   {
-    path:'/stuNameList',
-    component:() => import('@/components/home/MainMenu/stu/stuNameList')
+    path: '/Home',
+    component: Home,
+    children: [
+      {
+        path:'/Dashboard',
+        component:Dashboard
+      },
+
+      {
+        path:'/college',
+        component:() => import('../views/home/MainMenu/college/college')
+      },
+      {
+        path:'/absence',
+        component:() => import('../views/home/MainMenu/absence/absence')
+      },
+      {
+        path:'/ClassCr/:pid',
+        component:() => import('../views/home/MainMenu/ClassCr/ClassCr')
+      },
+
+      {
+        path:'/superAdmin',
+        component:() => import('../views/home/admin/superAdmin')
+      },
+
+    ]
   },
-  {
-    path:'/Dashboard',
-    component:Dashboard
-  },
-  {
-    path:'/stuInformation',
-    component:() => import('@/components/home/MainMenu/stu/stuInformation')
-  },
-  {
-    path:'/stuAdd',
-    component:() => import('@/components/home/MainMenu/stu/stuAdd')
-  },
-  {
-    path:'/stuModify',
-    component:() => import('@/components/home/MainMenu/stu/stuModify')
-  },
-  {
-    path:'/teachModify',
-    component: () => import('@/components/home/MainMenu/teach/teachModify')
-  },
-  {
-    path:'/teachAdd',
-    component:() => import('@/components/home/MainMenu/teach/teachAdd')
-  },
-  {
-    path:'/teachInformation',
-    component:() => import('@/components/home/MainMenu/teach/teachInformation')
-  },
-  {
-    path:'/teachNameList',
-    component:() => import('@/components/home/MainMenu/teach/teachNameList')
-  },
-  {
-    path:'/vacation',
-    component:() => import('@/components/home/admin/vacation')
-  },
+
 
 
 
@@ -58,5 +55,31 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+router.beforeEach((to, from, next) => {
+     if ($store.state.isSing) {
+       if (to.path === '/superAdmin') {
+         getAdminInfo()
+             .then(res => {
+               if( res.data.type === 1){
+                 next()
+               }else{
+                 next('/')
+               }
+             })
+             .catch(err=>{
+               next('/')
+             })
+       }
+       } else {
+         if (to.path === '/') {
+            next()
+           } else {
+             next('/')
+           }
+
+      }
+  })
+
+
 
 export default router
