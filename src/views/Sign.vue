@@ -31,6 +31,7 @@
                 filled
                 color="blue-grey lighten-2"
                 label="用户名"
+                @keyup.enter="submit()"
             ></v-text-field>
         </div>
         <div style="width: 280px">
@@ -43,6 +44,7 @@
                 type="password"
                 color="blue-grey lighten-2"
                 label="密码"
+                @keyup.enter="submit()"
             ></v-text-field>
         </div>
       </v-container>
@@ -56,6 +58,7 @@
           color="blue-grey darken-3"
           depressed
           @click="submit()"
+
       >
         <v-icon left>
           mdi-update
@@ -127,8 +130,8 @@ name: "Sign",
          if (this.$store.state.token) {
            alert('登录成功')
            this.$store.commit('upDataSing')
-           VueCookies.set('username', this.names)
-           VueCookies.set('password', this.pas)
+           VueCookies.set('username', this.names,{expires: 7})
+           VueCookies.set('password', this.pas,{expires: 7})
            getImage(this.names)
                .then((res) => {
                    $store.commit('upDateAdminImage', res.data)

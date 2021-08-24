@@ -243,6 +243,32 @@ export default {
       ],
       items: [
         {
+          name:'19计应4',
+          pid:'1941051'
+        },
+        {
+          name:'19计应4',
+          pid:'1941052'
+        },
+        {
+          name:'19计应4',
+          pid:'1941053'
+        },
+        {
+          name:'19计应4',
+          pid:'1941054'
+        },
+        {
+          name:'19计应4',
+          pid:'1941055'
+        },
+        {
+          name:'19计应4',
+          pid:'1941056'
+        },
+        {
+          name:'19计应4',
+          pid:'1941057'
         }
       ],
     }
@@ -253,22 +279,22 @@ export default {
 
     }
   },
-  created() {
-    getClassFromApi(this.ClassName.cid)
-        .then(res=>{
-          if(ifthen(res)) {
-
-            this.items = []
-            for (let i = 0; i < res.data.list.length; i++) {
-              this.addItem['name'] = res.data.list[i].name
-              this.addItem['pid'] = res.data.list[i].pid
-              this.items.push(this.addItem);
-              this.addItem = []
-            }
-          }
-        })
-        .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取班级信息失败请重新尝试或检查网络连接'})
-  },
+  // created() {
+  //   getClassFromApi(this.ClassName.cid)
+  //       .then(res=>{
+  //         if(ifthen(res)) {
+  //
+  //           this.items = []
+  //           for (let i = 0; i < res.data.list.length; i++) {
+  //             this.addItem['name'] = res.data.list[i].name
+  //             this.addItem['pid'] = res.data.list[i].pid
+  //             this.items.push(this.addItem);
+  //             this.addItem = []
+  //           }
+  //         }
+  //       })
+  //       .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取班级信息失败请重新尝试或检查网络连接'})
+  // },
   computed: {
     cid(){
       return this.ClassName.cid+''
@@ -300,7 +326,8 @@ export default {
       if (this.editedIndex > -1) {
         console.log('修改');
         if(this.editedItem.name&&this.editedItem.pid){
-
+          this.$set(this.items,this.editedIndex,this.editedItem)
+          this.close()
           updateClassListFromApi(this.editedItem,this.ClassName.cid)
               .then((res)=>{
                 if(ifthen(res)) {
@@ -317,7 +344,8 @@ export default {
       } else {
         console.log('添加');
         if(this.editedItem.pid&&this.editedItem.name){
-
+          this.items.push(this.editedItem)
+          this.close()
           addClassListFromApi(this.editedItem,this.ClassName.cid)
               .then((res)=>{
                 if(ifthen(res)) {
@@ -349,6 +377,8 @@ export default {
     },
 
     deleteItemConfirm () {
+      this.items.splice(this.editedIndex, 1)
+      this.closeDelete()
         deleteClassListFromApi(this.editedItem)
           .then((res)=>{
             if(ifthen(res)) {

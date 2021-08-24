@@ -4,7 +4,7 @@ import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-        adminImage:"https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg",
+        adminImage:"https://cdn.vuetifyjs.com/images/john.jpg",
         adminUserName:'admin',
         isSing:false,//改false
         Sing:true,

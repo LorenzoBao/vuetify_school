@@ -55,30 +55,30 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-router.beforeEach((to, from, next) => {
-     if ($store.state.isSing) {
-       if (to.path === '/superAdmin') {
-         getAdminInfo()
-             .then(res => {
-               if( res.data.type === 1){
-                 next()
-               }else{
-                 next('/')
-               }
-             })
-             .catch(err=>{
-               next('/')
-             })
-       }
-       } else {
-         if (to.path === '/') {
-            next()
-           } else {
-             next('/')
-           }
-
-      }
-  })
+// router.beforeEach((to, from, next) => {
+//      if ($store.state.isSing) {
+//        if (to.path === '/superAdmin') {
+//          getAdminInfo()
+//              .then(res => {
+//                if( res.data.type === 1){
+//                  next()
+//                }else{
+//                  next('/')
+//                }
+//              })
+//              .catch(err=>{
+//                next('/')
+//              })
+//        }
+//        } else {
+//          if (to.path === '/') {
+//             next()
+//            } else {
+//              next('/')
+//            }
+//
+//       }
+//   })
 
 
 

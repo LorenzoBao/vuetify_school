@@ -462,6 +462,8 @@ export default {
       this.pawUserName=''
     },
     rePaw(){
+      this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='重置成功'
+      this.pawDialog=false
       reAdminPaw(this.pawUserName)
       .then(res=>{
         if(ifthen(res)) {
@@ -488,7 +490,8 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         console.log('修改');
-
+        this.$set(this.items,this.editedIndex,this.editedItem)
+        this.close()
           updateAdminListFromApi(this.editedItem)
               .then((res)=>{
                 if(ifthen(res)) {
@@ -506,6 +509,8 @@ export default {
         console.log(this.addItem.image);
 
         console.log(this.editedItem.image);
+        this.items.push(this.editedItem)
+        this.close()
         addAdminListFromApi(this.addItem)
               .then((res)=>{
                 if(ifthen(res)) {
@@ -539,6 +544,8 @@ export default {
     },
 
     deleteItemConfirm () {
+      this.items.splice(this.editedIndex, 1)
+      this.closeDelete()
       deleteAdminListFromApi(this.editedItem)
           .then((res)=>{
             if(ifthen(res)) {

@@ -161,7 +161,28 @@ export default {
 
     ],
     addItem:{},
-    desserts: [],
+    desserts: [
+        {
+          name:'信息与指挥交通学院',
+          cid:'1001'
+
+         },
+      {
+        name:'信息与指挥交通学院',
+        cid:'1002'
+
+      },
+      {
+        name:'信息与指挥交通学院',
+        cid:'1003'
+
+      },
+      {
+        name:'信息与指挥交通学院',
+        cid:'1004'
+
+      }
+    ],
     editedIndex: -1,
     editedItem: {
       name: '',
@@ -235,6 +256,8 @@ components:{
 
     deleteItemConfirm () {
       console.log(this.editedItem);
+      this.desserts.splice(this.editedIndex, 1)
+      this.closeDelete()
       deleteCollegeFromApi(this.editedItem)
         .then((res)=>{
           if(ifthen(res)) {
@@ -267,6 +290,8 @@ components:{
 
       if (this.editedIndex > -1) {
         console.log('修改');
+        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        this.close()
         updateCollegeFromApi(this.editedItem.cid,this.editedItem.name)
             .then((res)=>{
               if(ifthen(res)) {
@@ -280,6 +305,8 @@ components:{
 
       } else {
         console.log('新增');
+        this.desserts.push(this.editedItem)
+        this.close()
         addCollegeFromApi(this.editedItem.cid,this.editedItem.name)
             .then((res)=>{
               if(ifthen(res)){
