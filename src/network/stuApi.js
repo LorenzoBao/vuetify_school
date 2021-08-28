@@ -71,7 +71,7 @@ export function deleteStuFromApi(items) {
 
         params:{
             date:items.oldTime,
-            sid:items.sid
+            sid:items.number
         }
     })
 }

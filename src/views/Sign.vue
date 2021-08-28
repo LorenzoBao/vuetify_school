@@ -162,8 +162,6 @@ name: "Sign",
 
       })
 
-   this.$router.push('/Dashboard')
-
 
 
   }

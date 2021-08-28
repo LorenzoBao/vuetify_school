@@ -5,15 +5,8 @@ import {ifthen} from "./FN";
 export function request(config) {
   // 1.创建axios的实例
   const instance = axios.create({
-    //baseURL: 'http://192.168.43.54:8080',
-      //热点
 
-   //baseURL: 'http://192.168.3.47:8080',
-      //wifi
-
-
-      //我的热点
-      baseURL: 'http://192.168.43.248',
+      baseURL: 'http://110.40.251.92:8080',
 
 
       timeout: 1000

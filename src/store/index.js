@@ -4,9 +4,9 @@ import VueCookies from 'vue-cookies'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-        adminImage:"https://cdn.vuetifyjs.com/images/john.jpg",
+        adminImage:"https://cdn.vuetifyjs.com/images/cards/dark-beach.jpg",
         adminUserName:'admin',
-        isSing:false,//改false
+        isSing:true,//改false
         Sing:true,
         token:VueCookies.get('token')?VueCookies.get('token'):'',
         adminInfo:null

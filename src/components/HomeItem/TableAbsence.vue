@@ -248,50 +248,7 @@ export default {
       { text: '描述', value: 'describe', sortable: false },
       { text: '操作', value: 'actions', sortable: false },
     ],
-    desserts: [
-      { time:'2021-1-1',
-        number:'1220608151',
-        name:'小明',
-        course:'数学',
-        LorT:'迟到',
-        describe:'1,2',
-      },
-      { time:'2021-1-1',
-        number:'1220608151',
-        name:'小明',
-        course:'数学',
-        LorT:'迟到',
-        describe:'1,2',
-      },
-      { time:'2021-1-1',
-        number:'1220608151',
-        name:'小明',
-        course:'数学',
-        LorT:'迟到',
-        describe:'1,2',
-      },
-      { time:'2021-1-1',
-        number:'1220608151',
-        name:'小明',
-        course:'数学',
-        LorT:'迟到',
-        describe:'1,2',
-      },
-      { time:'2021-1-1',
-        number:'1220608151',
-        name:'小明',
-        course:'数学',
-        LorT:'迟到',
-        describe:'1,2',
-      },
-      { time:'2021-1-1',
-        number:'1220608151',
-        name:'小明',
-        course:'数学',
-        LorT:'迟到',
-        describe:'1,2',
-      },
-    ],
+    desserts: [      ],
 
     editedIndex: -1,
     editedItem: {
@@ -533,12 +490,9 @@ export default {
     },
 
     deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
       deleteStuFromApi(this.editedItem)
           .then((res)=>{
             if(ifthen(res)) {
-
               this.desserts.splice(this.editedIndex, 1)
               this.closeDelete()
             }
@@ -568,7 +522,7 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         if(this.editedItem.course&&this.editedItem.name&&this.editedItem.time&&this.editedItem.number){
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
+
           updateStuFromApi(this.editedItem)
               .then((res)=>{
                 if(ifthen(res)) {
@@ -584,8 +538,7 @@ export default {
       } else {
         if(this.editedItem.course&&this.editedItem.name&&this.editedItem.time&&this.editedItem.number){
           let time=retimeData(this.editedItem.time)
-          this.desserts.push(this.editedItem);
-          this.close()
+
           addStuFromApi(this.editedItem,time)
               .then((res)=>{
                 if(ifthen(res)) {

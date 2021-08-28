@@ -51,7 +51,7 @@ export function ifthen(res){
     if(res.code<300&&res.code>=200){
         return 1
 }else{
-    return 1
+    return 0
     }
 }
 

@@ -317,30 +317,8 @@ export default {
       ],
       items: [
         {
-          name:'小明',
-          sid:'194105401',
-          remarks:'班长'
-        },
-        {
-          name:'小明',
-          sid:'194105402',
-          remarks:'学委'
-        },
-        {
-          name:'小明',
-          sid:'194105403',
-          remarks:'体委'
-        },
-        {
-          name:'小明',
-          sid:'194105404',
-          remarks:''
-        },
-        {
-          name:'小明',
-          sid:'194105405',
-          remarks:''
-        },
+
+        }
       ],
     }
   },
@@ -394,10 +372,8 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         console.log('修改');
-
         if(this.editedItem.name&&this.editedItem.sid&&this.editedItem.remarks){
-          Object.assign(this.items[this.editedIndex], this.editedItem)
-          this.close()
+
           updateStuListFromApi(this.editedItem,this.pid)
             .then((res)=>{
               if(ifthen(res)) {
@@ -415,8 +391,6 @@ export default {
 
         if(this.editedItem.sid&&this.editedItem.name&&this.editedItem.remarks){
          //this.imageToBase64(this.editedItem.image)
-          this.items.push(this.editedItem)
-          this.close()
           addStuListFromApi(this.editedItem,this.pid)
             .then((res)=>{
               if(ifthen(res)) {
@@ -447,8 +421,6 @@ export default {
     },
 
     deleteItemConfirm () {
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
       deleteStuListFromApi(this.editedItem)
         .then((res)=>{
           if(ifthen(res)) {

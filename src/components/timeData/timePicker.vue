@@ -48,7 +48,7 @@
 export default {
 name: "times",
   data:()=>({
-    dates: ['2019-04-10', '2021-04-19'],
+    dates: ['2019-04-10', '2021-09-19'],
     menu: false,
     modal: false,
     menu2: false,
@@ -59,6 +59,8 @@ name: "times",
      },
 
    },
+
+
 
 
 }
