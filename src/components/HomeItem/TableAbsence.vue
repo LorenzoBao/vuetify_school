@@ -303,7 +303,6 @@ export default {
 
 
     collegeValue(val){
-      console.log(val);
       this.isLoading=true
       // this.ClassItem=null
       val=this.collegeItemName[val]
@@ -388,7 +387,6 @@ export default {
 
 
     StuValue(val){
-      console.log(val);
       let sid=this.StuIdName[val]
       this.isLoading=true
       this.desserts=[]
@@ -436,7 +434,34 @@ export default {
         this.$refs.failDialogs.text='获取学院信息失败请重新尝试或检查网络连接'})
 
   },
+mounted() {
+  getClassTableFromApi(1941054,this.$refs.times.dates[0],this.$refs.times.dates[1])
+      .then(res=>{
+        if(ifthen(res)) {
+          this.desserts = []
+          for (let i = 0; i < res.data.list.length; i++) {
+            for (let j = 0; j < res.data.list[i].detailsList.length; j++) {
+              this.addItem['oldTime'] = res.data.list[i].detailsList[j].createDate
+              this.addItem['number'] = res.data.list[i].detailsList[j].sid
+              this.addItem['course'] = res.data.list[i].detailsList[j].course
+              this.addItem['name'] = res.data.list[i].student.name
+              this.addItem['LorT'] = res.data.list[i].detailsList[j].reason
+              this.addItem['describe'] = res.data.list[i].detailsList[j].remarks
+              this.addItem['time'] = timeData(this.addItem['oldTime'])
+              this.desserts.push(this.addItem);
+              this.addItem = {}
+            }
+          }
+          this.isLoading = false
+        }
+      })
+      .catch(()=>{
+        this.$refs.failDialogs.dialog=true
+        this.isLoading=false
+        this.$refs.failDialogs.text='获取班级缺勤信息失败请重新尝试或检查网络连接'
+      })
 
+},
   methods: {
     nowTime(){
       const myDate = new Date();
@@ -450,7 +475,6 @@ export default {
       exportTableFromApi(val,this.$refs.times.dates[0],this.$refs.times.dates[1],ID)
       .then((res) => {
 
-          console.log('res', res);
           const blob = res;
           const reader = new FileReader();
           reader.responseType = 'blob';
@@ -458,12 +482,10 @@ export default {
           reader.onload = (e) => {
             const a = document.createElement('a');
             const name = res.headers;
-            console.log(name);
             a.download = this.$refs.times.dates[0] + '到' + this.$refs.times.dates[1] + this.collegeValue + '学院' + this.ClassValue + this.StuValue + `.xlsx`;
             // 后端设置的文件名称在res.headers的 "content-disposition": "form-data; name=\"attachment\"; filename=\"20181211191944.zip\"",
             a.href = e.target.result;
             document.body.appendChild(a);
-            console.log(a.href);
             a.click();
             document.body.removeChild(a);
           };

@@ -487,7 +487,6 @@ export default {
     },
     save () {
       if (this.editedIndex > -1) {
-        console.log('修改');
 
           updateAdminListFromApi(this.editedItem)
               .then((res)=>{
@@ -498,14 +497,9 @@ export default {
               })
               .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
       } else {
-        console.log('添加');
         this.addItem=this.editedItem
 
         this.imageToBase64(this.editedItem.image)
-        console.log(this.editedItem);
-        console.log(this.addItem.image);
-
-        console.log(this.editedItem.image);
         addAdminListFromApi(this.addItem)
               .then((res)=>{
                 if(ifthen(res)) {
@@ -566,11 +560,9 @@ export default {
       let reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => {
-        console.log('file 转 base64结果：' + reader.result)
         this.editedItem.image=reader.result
       }
       reader.onerror = function (error) {
-        console.log('Error: ', error)
       }
     }
   },

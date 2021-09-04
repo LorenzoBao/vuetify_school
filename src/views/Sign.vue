@@ -83,8 +83,8 @@ export default {
 name: "Sign",
   data(){
     return{
-      pas: VueCookies.get('password')? VueCookies.get('password'):'',
-      names:  VueCookies.get('username')?VueCookies.get('username'):'',
+      pas: VueCookies.get('password')? VueCookies.get('password'):'123456',
+      names:  VueCookies.get('username')?VueCookies.get('username'):'admin',
       // password: VueCookies.get('password'),
       // username:VueCookies.get('username'),
       isUpdating: false,
@@ -132,17 +132,17 @@ name: "Sign",
            this.$store.commit('upDataSing')
            VueCookies.set('username', this.names,{expires: 7})
            VueCookies.set('password', this.pas,{expires: 7})
-           getImage(this.names)
-               .then((res) => {
-                   $store.commit('upDateAdminImage', res.data)
-                   $store.commit('upDateAdminUserName', this.names)
-                   }
-               ).catch()
+           // getImage(this.names)
+           //     .then((res) => {
+           //         $store.commit('upDateAdminImage', res.data)
+           //         $store.commit('upDateAdminUserName', this.names)
+           //         }
+           //     ).catch()
              getAdminInfo()
                  .then(res=>{
                    if(ifthen(res)) {
                      $store.commit('upDateAdminInfo', res.data)
-                     this.$router.push('/Dashboard')
+                     this.$router.push('/college')
                    }
 
                  })

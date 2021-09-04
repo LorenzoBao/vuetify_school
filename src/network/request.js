@@ -20,7 +20,9 @@ export function request(config) {
   instance.interceptors.request.use(config => {
 
     // 1.比如config中的一些信息不符合服务器的要求
+     // config["headers"]={'Authorization': $store.state.token}
       config["headers"]={'Authorization': $store.state.token}
+
      // header:{'Authorization': ()=>{return this.$store.state.token},
       console.log("请求体拦截");
 

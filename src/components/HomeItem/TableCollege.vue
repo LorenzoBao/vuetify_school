@@ -234,7 +234,6 @@ components:{
     },
 
     deleteItemConfirm () {
-      console.log(this.editedItem);
       deleteCollegeFromApi(this.editedItem)
         .then((res)=>{
           if(ifthen(res)) {
@@ -266,7 +265,6 @@ components:{
     save () {
 
       if (this.editedIndex > -1) {
-        console.log('修改');
         updateCollegeFromApi(this.editedItem.cid,this.editedItem.name)
             .then((res)=>{
               if(ifthen(res)) {
@@ -279,7 +277,6 @@ components:{
             .catch((err)=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
 
       } else {
-        console.log('新增');
         addCollegeFromApi(this.editedItem.cid,this.editedItem.name)
             .then((res)=>{
               if(ifthen(res)){

@@ -22,7 +22,6 @@ export function timeData(d){
     let second = array_time[2].split(".")[0];
     formate_datetime = array_date[0] + "年" + removeZero(array_date[1]) + "月" +removeZero(array_date[2]) + "日 "
         + removeZero(array_time[0]) + "时" + removeZero(array_time[1]) + "分" + second + "秒";
-    console.log(formate_datetime);
     return formate_datetime;
 }
 
@@ -43,7 +42,6 @@ export function retimeData(d){
 
     formate_datetime = array_date[0] + "-" + reremoveZero(array_date[1]) + "-" +reremoveZero(array_date[2]) + "T"
         + reremoveZero(array_time[0])+ ":" + reremoveZero(array_time[1]);
-    console.log(formate_datetime);
     return formate_datetime;
 
 }

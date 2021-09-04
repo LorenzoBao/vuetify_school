@@ -3,7 +3,6 @@ import {retimeData} from "./FN";
 
 
 export function addStuListFromApi(item,pid) {
-    console.log(item);
     return request({
         url:'/students/add',
         method:'post',
@@ -69,10 +68,10 @@ export function deleteStuFromApi(items) {
         url:'/absent/delete',
         method:'delete',
 
-        params:{
+        data:[{
             date:items.oldTime,
             sid:items.number
-        }
+        }]
     })
 }
 export function addStuFromApi(val,time) {
@@ -105,7 +104,6 @@ export function updateStuFromApi(items) {
     })
 }
 export function exportTableFromApi(val,start,end,id) {
-    console.log(id);
     return request({
         url:'/execl/export/'+val,
         method:'get',

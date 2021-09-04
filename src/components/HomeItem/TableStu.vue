@@ -371,7 +371,6 @@ export default {
     },
     save () {
       if (this.editedIndex > -1) {
-        console.log('修改');
         if(this.editedItem.name&&this.editedItem.sid&&this.editedItem.remarks){
 
           updateStuListFromApi(this.editedItem,this.pid)
@@ -387,7 +386,6 @@ export default {
           alert('请输入完整')
         }
       } else {
-        console.log('添加');
 
         if(this.editedItem.sid&&this.editedItem.name&&this.editedItem.remarks){
          //this.imageToBase64(this.editedItem.image)
@@ -449,11 +447,9 @@ export default {
     //   let reader = new FileReader()
     //   reader.readAsDataURL(file)
     //   reader.onload = () => {
-    //     console.log('file 转 base64结果：' + reader.result)
     //     this.editedItem.image=reader.result
     //   }
     //   reader.onerror = function (error) {
-    //     console.log('Error: ', error)
     //   }
     // }
 

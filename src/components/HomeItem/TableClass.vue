@@ -298,7 +298,6 @@ export default {
     },
     save () {
       if (this.editedIndex > -1) {
-        console.log('修改');
         if(this.editedItem.name&&this.editedItem.pid){
 
           updateClassListFromApi(this.editedItem,this.ClassName.cid)
@@ -315,7 +314,6 @@ export default {
           alert('请输入完整')
         }
       } else {
-        console.log('添加');
         if(this.editedItem.pid&&this.editedItem.name){
 
           addClassListFromApi(this.editedItem,this.ClassName.cid)
