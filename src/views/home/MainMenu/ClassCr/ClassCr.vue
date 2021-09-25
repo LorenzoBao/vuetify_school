@@ -1,6 +1,6 @@
 <template>
   <div>
-<h2>学生管理</h2>
+    <h2>学生管理</h2>
     <Breadcrumbs :breadcrumbsItemData="Breaditems"></Breadcrumbs>
     <TableStu :pid="pid"></TableStu>
   </div>
@@ -9,11 +9,12 @@
 <script>
 import Breadcrumbs from "../../../../components/HomeItem/Breadcrumbs";
 import TableStu from "../../../../components/HomeItem/TableStu";
+
 export default {
-name: "ClassCr",
-  data(){
-    return{
-      pid:this.$route.params.pid,
+  name: "ClassCr",
+  data() {
+    return {
+      pid: this.$route.params.pid,
       Breaditems: [
         {
           text: '首页',
@@ -24,7 +25,7 @@ name: "ClassCr",
           text: '学院管理',
           disabled: false,
           to: '/college',
-        },{
+        }, {
           text: '学生管理',
           disabled: true,
           to: '/ClassCr',
@@ -32,7 +33,7 @@ name: "ClassCr",
       ],
     }
   },
-  components:{
+  components: {
     Breadcrumbs,
     TableStu
   },

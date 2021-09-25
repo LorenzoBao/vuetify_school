@@ -31,8 +31,8 @@ import MainNav from "./views/MainNav";
 import MainBar from "./views/MainBar";
 
 export default {
-name: "Home",
-  components:{
+  name: "Home",
+  components: {
     MainNav,
     MainBar
   },
@@ -44,7 +44,7 @@ name: "Home",
 </script>
 
 <style scoped>
-#mainDiv{
+#mainDiv {
   margin: 5px 25px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div >
-      <h2>缺勤记录操作</h2>
+  <div>
+    <h2>缺勤记录操作</h2>
     <Breadcrumbs :breadcrumbsItemData="Breaditems"></Breadcrumbs>
     <TableAbsence></TableAbsence>
   </div>
@@ -10,25 +10,26 @@
 import {request} from "../../../../network/request";
 import Breadcrumbs from "../../../../components/HomeItem/Breadcrumbs";
 import TableAbsence from "../../../../components/HomeItem/TableAbsence";
+
 export default {
-name: "adsence",
-  data(){
-  return{
-    Breaditems: [
-      {
-        text: '首页',
-        disabled: false,
-        to: '/Dashboard',
-      },
-      {
-        text: '缺勤记录',
-        disabled: true,
-        to: '/absence',
-      },
-    ],
-  }
+  name: "adsence",
+  data() {
+    return {
+      Breaditems: [
+        {
+          text: '首页',
+          disabled: false,
+          to: '/Dashboard',
+        },
+        {
+          text: '缺勤记录',
+          disabled: true,
+          to: '/absence',
+        },
+      ],
+    }
   },
-  components:{
+  components: {
     Breadcrumbs,
     TableAbsence
   },

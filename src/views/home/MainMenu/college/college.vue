@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <h2>学院管理</h2>
     <Breadcrumbs :breadcrumbsItemData="Breaditems"></Breadcrumbs>
     <TableCollege></TableCollege>
@@ -9,9 +9,10 @@
 <script>
 import TableCollege from "../../../../components/HomeItem/TableCollege";
 import Breadcrumbs from "../../../../components/HomeItem/Breadcrumbs";
+
 export default {
-  name:'college',
-  data () {
+  name: 'college',
+  data() {
     return {
       Breaditems: [
         {

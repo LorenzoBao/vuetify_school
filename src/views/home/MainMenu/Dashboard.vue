@@ -1,18 +1,19 @@
 <template>
   <div>
-    <failDialogs  ref="failDialogs"></failDialogs>
+    <failDialogs ref="failDialogs"></failDialogs>
     <h2>首页</h2>
   </div>
 </template>
 
 <script>
 import {getAdminInfo} from "../../../network/adminApi";
-import $store from  '../../../store'
+import $store from '../../../store'
 import {ifthen} from "../../../network/FN";
 import failDialogs from "../../../components/HomeItem/failDialogs";
+
 export default {
-name: "Dashboard",
-  components:{
+  name: "Dashboard",
+  components: {
     failDialogs
   },
 

@@ -1,4 +1,3 @@
-
 <template>
   <div class="text-center">
     <v-dialog
@@ -11,7 +10,7 @@
         </v-card-title>
 
         <v-card-text>
-          {{text }}
+          {{ text }}
         </v-card-text>
 
         <v-divider></v-divider>
@@ -33,11 +32,11 @@
 
 <script>
 export default {
-name: "failDialogs",
-  data () {
+  name: "failDialogs",
+  data() {
     return {
       dialog: false,
-      text:'操作失败，请刷新页面'
+      text: '操作失败，请刷新页面'
     }
   },
 }

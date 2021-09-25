@@ -11,9 +11,7 @@
       >
         个人信息
       </v-btn>
-
       <v-spacer></v-spacer>
-
       <v-btn
           icon
           @click="show = !show"
@@ -32,9 +30,9 @@
 
 <script>
 export default {
-name: "pillDown",
-  data(){
-    return{
+  name: "pillDown",
+  data() {
+    return {
       show: false,
 
     }

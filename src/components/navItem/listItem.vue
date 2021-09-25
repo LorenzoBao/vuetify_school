@@ -6,7 +6,7 @@
       no-action
   >
     <template v-slot:activator>
-      <v-list-item-title>{{listData.title}}</v-list-item-title>
+      <v-list-item-title>{{ listData.title }}</v-list-item-title>
     </template>
 
     <v-list-item
@@ -26,22 +26,21 @@
 
 <script>
 export default {
-name: "listItem",
- data(){
-    return{
-   }
+  name: "listItem",
+  data() {
+    return {}
   },
-  props:{
-    listData:{
+  props: {
+    listData: {
       type: Object,
-      default(){
-        return{
-          icon:'',
-          title:'',
-          data:[]
+      default() {
+        return {
+          icon: '',
+          title: '',
+          data: []
         }
       }
-  }
+    }
   }
 }
 </script>

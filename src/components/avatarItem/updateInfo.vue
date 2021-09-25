@@ -4,7 +4,6 @@
       dark
       :loading="isUpdating"
       width="600"
-
   >
     <failDialogs ref="failDialogs"></failDialogs>
 
@@ -73,56 +72,56 @@
         </v-row>
       </v-row>
     </v-img>
-<!--    <v-form>-->
-<!--      <v-container>-->
-<!--        <v-row>-->
-<!--          <v-col-->
-<!--              cols="12"-->
-<!--              md="12"-->
-<!--          >-->
-<!--            <v-text-field-->
-<!--                v-model="addItem.roomName"-->
-<!--                :disabled="isUpdating"-->
-<!--                filled-->
-<!--                color="blue-grey lighten-2"-->
-<!--                label="昵称"-->
-<!--            ></v-text-field>-->
-<!--          </v-col>-->
+    <!--    <v-form>-->
+    <!--      <v-container>-->
+    <!--        <v-row>-->
+    <!--          <v-col-->
+    <!--              cols="12"-->
+    <!--              md="12"-->
+    <!--          >-->
+    <!--            <v-text-field-->
+    <!--                v-model="addItem.roomName"-->
+    <!--                :disabled="isUpdating"-->
+    <!--                filled-->
+    <!--                color="blue-grey lighten-2"-->
+    <!--                label="昵称"-->
+    <!--            ></v-text-field>-->
+    <!--          </v-col>-->
 
 
-<!--        </v-row>-->
-<!--        <v-row>-->
-<!--          <v-col-->
-<!--              cols="12"-->
-<!--              md="12"-->
-<!--          >-->
-<!--            <v-text-field-->
-<!--                v-model="addItem.remark"-->
-<!--                :disabled="isUpdating"-->
-<!--                filled-->
-<!--                color="blue-grey lighten-2"-->
-<!--                label="描述"-->
-<!--            ></v-text-field>-->
-<!--          </v-col>-->
+    <!--        </v-row>-->
+    <!--        <v-row>-->
+    <!--          <v-col-->
+    <!--              cols="12"-->
+    <!--              md="12"-->
+    <!--          >-->
+    <!--            <v-text-field-->
+    <!--                v-model="addItem.remark"-->
+    <!--                :disabled="isUpdating"-->
+    <!--                filled-->
+    <!--                color="blue-grey lighten-2"-->
+    <!--                label="描述"-->
+    <!--            ></v-text-field>-->
+    <!--          </v-col>-->
 
-<!--        </v-row>-->
-<!--      </v-container>-->
-<!--    </v-form>-->
+    <!--        </v-row>-->
+    <!--      </v-container>-->
+    <!--    </v-form>-->
     <v-divider></v-divider>
-<!--    <v-card-actions>-->
+    <!--    <v-card-actions>-->
 
-<!--      <v-btn-->
-<!--          :loading="isUpdating"-->
-<!--          color="blue-grey darken-3"-->
-<!--          depressed-->
-<!--          @click="save()"-->
-<!--      >-->
-<!--        <v-icon left>-->
-<!--          mdi-update-->
-<!--        </v-icon>-->
-<!--        保存-->
-<!--      </v-btn>-->
-<!--    </v-card-actions>-->
+    <!--      <v-btn-->
+    <!--          :loading="isUpdating"-->
+    <!--          color="blue-grey darken-3"-->
+    <!--          depressed-->
+    <!--          @click="save()"-->
+    <!--      >-->
+    <!--        <v-icon left>-->
+    <!--          mdi-update-->
+    <!--        </v-icon>-->
+    <!--        保存-->
+    <!--      </v-btn>-->
+    <!--    </v-card-actions>-->
   </v-card>
 </template>
 
@@ -133,29 +132,25 @@ import failDialogs from "../HomeItem/failDialogs";
 import $store from '../../store'
 import upDateImage from "./upDateImage";
 import {ifthen} from "../../network/FN";
+
 export default {
-  data () {
+  data() {
     return {
       isUpdating: false,
-      items:{
+      items: {
         roomName: '信息与智慧交通学院',
-        username:'',
-        remark:'aaaa',
-        type:1,
+        username: '',
+        remark: 'aaaa',
+        type: 1,
 
       },
-      addItem:{
-
-      },
-
-
+      addItem: {},
     }
   },
 
 
-
   methods: {
-    logOut(){
+    logOut() {
       this.$store.commit('upDataSing')
       this.$router.push('/')
     },
@@ -184,31 +179,30 @@ export default {
 
   created() {
     getAdminInfo()
-    .then(res=>{
-      if(ifthen(res)) {
-        this.items.roomName = res.data.roomName
-        this.items.username = res.data.username
-        this.items.remark = res.data.remark
-        this.items.type = res.data.type
-        this.addItem = this.items
-      }
-    })
-    .catch(()=>{
-      this.$refs.failDialogs.dialog=true
-      this.$refs.failDialogs.text='获取信息失败请重新尝试或检查网络连接'
-    })
-   // this.items=this.$store.state.adminInfo
+        .then(res => {
+          if (ifthen(res)) {
+            this.items.roomName = res.data.roomName
+            this.items.username = res.data.username
+            this.items.remark = res.data.remark
+            this.items.type = res.data.type
+            this.addItem = this.items
+          }
+        })
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true
+          this.$refs.failDialogs.text = '获取信息失败请重新尝试或检查网络连接'
+        })
+    // this.items=this.$store.state.adminInfo
     //this.addItem=this.$store.state.adminInfo
-
   },
-  components:{
+
+  components: {
     upDatePaw,
-      failDialogs,
+    failDialogs,
     upDateImage
 
-}
+  }
 }
 </script>
-
 <style scoped>
 </style>

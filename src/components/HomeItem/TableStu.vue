@@ -5,8 +5,6 @@
         v-model="dialog"
         max-width="500px"
     >
-
-
       <v-card>
         <v-card-title>
           <span class="headline">{{ formTitle }}</span>
@@ -15,7 +13,6 @@
         <v-card-text>
           <v-container>
             <v-row>
-
               <v-col
                   cols="12"
                   sm="6"
@@ -41,14 +38,14 @@
                   sm="6"
                   md="4"
               >
-<!--                <template>-->
-<!--                  <v-file-input-->
-<!--                      show-size-->
-<!--                      accept="image/*"-->
-<!--                      label="照片"-->
-<!--                      v-model="editedItem.image"-->
-<!--                  ></v-file-input>-->
-<!--                </template>-->
+                <!--                <template>-->
+                <!--                  <v-file-input-->
+                <!--                      show-size-->
+                <!--                      accept="image/*"-->
+                <!--                      label="照片"-->
+                <!--                      v-model="editedItem.image"-->
+                <!--                  ></v-file-input>-->
+                <!--                </template>-->
               </v-col>
               <v-textarea
                   v-model="editedItem.remarks"
@@ -88,7 +85,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <failDialogs  ref="failDialogs"></failDialogs>
+    <failDialogs ref="failDialogs"></failDialogs>
     <v-data-iterator
         :items="items"
         :items-per-page.sync="itemsPerPage"
@@ -116,15 +113,15 @@
               prepend-inner-icon="mdi-magnify"
               label="搜索"
           ></v-text-field>
-            <v-btn
-                large
-                depressed
-                color="blue"
-                style="margin: 5px"
-                @click="editItem()"
-            >
-              添加学生
-            </v-btn>
+          <v-btn
+              large
+              depressed
+              color="blue"
+              style="margin: 5px"
+              @click="editItem()"
+          >
+            添加学生
+          </v-btn>
           <template v-if="$vuetify.breakpoint.mdAndUp">
 
             <v-btn-toggle
@@ -165,10 +162,7 @@
             <v-card>
 
               <v-card-title class="subheading font-weight-bold">
-<!--                <img :src="item.image" width="150px" height="200px" >-->
-
-
-
+                <!--                <img :src="item.image" width="150px" height="200px" >-->
               </v-card-title>
 
               <v-divider></v-divider>
@@ -282,10 +276,10 @@ import {addStuListFromApi, deleteStuListFromApi, getStuFromApi, updateStuListFro
 import {ifthen} from "../../network/FN";
 
 export default {
-  name:'TableStu',
-  data () {
+  name: 'TableStu',
+  data() {
     return {
-      addItem:{},
+      addItem: {},
       itemsPerPageArray: [4, 8, 12],
       search: '',
       filter: {},
@@ -295,151 +289,162 @@ export default {
       sortBy: 'name',
       editedIndex: -1,
       dialog: false,
-      dialogDelete:false,
+      dialogDelete: false,
       editedItem: {
         name: null,
         sid: null,
         remarks: null,
-       // image:null
+        // image:null
       },
       defaultItem: {
         name: null,
         sid: null,
         remarks: null,
-      //  image:null
-
+        //  image:null
       },
       keys: [
         'Name',
         'Sid',
         'Remarks',
-
       ],
       items: [
-        {
-
-        }
+        {}
       ],
     }
   },
-  props:{
-    pid:{
-      type:String
+
+  props: {
+    pid: {
+      type: String
     }
   },
+
   created() {
     getStuFromApi(this.pid)
-        .then(res=>{
-          if(ifthen(res)){
+        .then(res => {
+          if (ifthen(res)) {
+            this.items = []
+            for (let i = 0; i < res.data.list.length; i++) {
+              this.addItem['name'] = res.data.list[i].name
+              this.addItem['sid'] = res.data.list[i].sid
+              this.addItem['remarks'] = res.data.list[i].remarks
 
-          this.items=[]
-          for(let i=0;i<res.data.list.length;i++) {
-            this.addItem['name']= res.data.list[i].name
-            this.addItem['sid']= res.data.list[i].sid
-            this.addItem['remarks']= res.data.list[i].remarks
-
-            this.items.push(this.addItem);
-            this.addItem=[]
-          }
+              this.items.push(this.addItem);
+              this.addItem = []
+            }
           }
         })
-        .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取学生信息失败请重新尝试或检查网络连接'})
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '获取学生信息失败请重新尝试或检查网络连接'
+        })
   },
+
   computed: {
-    formTitle () {
+    formTitle() {
       return this.editedIndex === -1 ? '新增学生信息' : '编辑学生信息'
     },
-    numberOfPages () {
+
+    numberOfPages() {
       return Math.ceil(this.items.length / this.itemsPerPage)
     },
-    filteredKeys () {
+
+    filteredKeys() {
       return this.keys.filter(key => key !== 'Name')
     },
   },
+
   methods: {
-    editItem (item) {
+    editItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    close () {
+
+    close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
-    save () {
+
+    save() {
       if (this.editedIndex > -1) {
-        if(this.editedItem.name&&this.editedItem.sid&&this.editedItem.remarks){
-
-          updateStuListFromApi(this.editedItem,this.pid)
-            .then((res)=>{
-              if(ifthen(res)) {
-                Object.assign(this.items[this.editedIndex], this.editedItem)
-                this.close()
-              }
-            })
-              .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
-
-        }else{
+        if (this.editedItem.name && this.editedItem.sid && this.editedItem.remarks) {
+          updateStuListFromApi(this.editedItem, this.pid)
+              .then((res) => {
+                if (ifthen(res)) {
+                  Object.assign(this.items[this.editedIndex], this.editedItem)
+                  this.close()
+                }
+              })
+              .catch(() => {
+                this.$refs.failDialogs.dialog = true;
+                this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+              })
+        } else {
           alert('请输入完整')
         }
       } else {
-
-        if(this.editedItem.sid&&this.editedItem.name&&this.editedItem.remarks){
-         //this.imageToBase64(this.editedItem.image)
-          addStuListFromApi(this.editedItem,this.pid)
-            .then((res)=>{
-              if(ifthen(res)) {
-                this.items.push(this.editedItem)
-                this.close()
-              }
-            })
-            .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='添加失败请重新尝试或检查网络连接'})
-
-
-        }else{
+        if (this.editedItem.sid && this.editedItem.name && this.editedItem.remarks) {
+          //this.imageToBase64(this.editedItem.image)
+          addStuListFromApi(this.editedItem, this.pid)
+              .then((res) => {
+                if (ifthen(res)) {
+                  this.items.push(this.editedItem)
+                  this.close()
+                }
+              })
+              .catch(() => {
+                this.$refs.failDialogs.dialog = true;
+                this.$refs.failDialogs.text = '添加失败请重新尝试或检查网络连接'
+              })
+        } else {
           alert('请输入完整')
         }
       }
     },
-    closeDelete () {
+
+    closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
-    deleteItem (item) {
+
+    deleteItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
-      this.editedItem=item
+      this.editedItem = item
     },
 
-    deleteItemConfirm () {
+    deleteItemConfirm() {
       deleteStuListFromApi(this.editedItem)
-        .then((res)=>{
-          if(ifthen(res)) {
+          .then((res) => {
+            if (ifthen(res)) {
 
-            this.items.splice(this.editedIndex, 1)
-            this.closeDelete()
-          }
-        })
-          .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='删除失败请重新尝试或检查网络连接'})
-
-
-
-
+              this.items.splice(this.editedIndex, 1)
+              this.closeDelete()
+            }
+          })
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '删除失败请重新尝试或检查网络连接'
+          })
     },
-    nextPage () {
+
+    nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1
     },
-    formerPage () {
+
+    formerPage() {
       if (this.page - 1 >= 1) this.page -= 1
     },
-    updateItemsPerPage (number) {
+
+    updateItemsPerPage(number) {
       this.itemsPerPage = number
     },
 
@@ -452,17 +457,19 @@ export default {
     //   reader.onerror = function (error) {
     //   }
     // }
-
   },
-  watch:{
-    dialog (val) {
+
+  watch: {
+    dialog(val) {
       val || this.close()
     },
-    dialogDelete (val) {
+
+    dialogDelete(val) {
       val || this.closeDelete()
     },
   },
-  components:{
+
+  components: {
     failDialogs
   }
 

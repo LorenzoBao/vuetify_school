@@ -9,8 +9,6 @@
     >
 
       <template v-slot:activator="{ on, attrs }">
-
-
         <v-list-item
             v-bind="attrs"
             v-on="on">
@@ -21,7 +19,6 @@
             <v-list-item-title>更改头像</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
       </template>
 
       <v-card
@@ -33,10 +30,9 @@
               <img
                   :src="image"
                   alt="无图片"
-
               >
             </v-list-item-avatar>
-            <h3>{{username}}</h3>
+            <h3>{{ username }}</h3>
             <failDialogs ref="failDialogs"></failDialogs>
 
           </v-list-item>
@@ -77,49 +73,47 @@ import {addImage, getImage} from "../../network/adminApi";
 import failDialogs from "../HomeItem/failDialogs";
 import $store from '../../store'
 import {ifthen} from "../../network/FN";
+
 export default {
   data: () => ({
-    image:$store.state.adminImage,
-    isUpdating:false,
+    image: $store.state.adminImage,
+    isUpdating: false,
     menu: false,
-    file:''
+    file: ''
 
   }),
-  props:{
+  props: {
     username: {
-      type:String
+      type: String
     }
   },
-  methods:{
-    submit(){
-      this.isUpdating=true
-      addImage(this.file,this.$store.state.adminUserName)
-      .then((res)=>{
-        if(ifthen(res)) {
-          this.$refs.failDialogs.dialog = true;
-          this.$refs.failDialogs.text = '修改成功'
-          this.menu = false
-          this.isUpdating = false
-          this.file = ''
-          getImage(this.$store.state.adminUserName)
-              .then((res) => {
-                if(ifthen(res)) {
-                  $store.commit('upDateAdminImage', res.data)
-                }
-              })
-        }
+  methods: {
+    submit() {
+      this.isUpdating = true
+      addImage(this.file, this.$store.state.adminUserName)
+          .then((res) => {
+            if (ifthen(res)) {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '修改成功'
+              this.menu = false
+              this.isUpdating = false
+              this.file = ''
+              getImage(this.$store.state.adminUserName)
+                  .then((res) => {
+                    if (ifthen(res)) {
+                      $store.commit('upDateAdminImage', res.data)
+                    }
+                  })
+            }
           })
-          .catch(()=>{
-            this.$refs.failDialogs.dialog=true;
-            this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'
-            this.isUpdating=false
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+            this.isUpdating = false
           })
-
-
-
     }
   },
-  components:{
+  components: {
     failDialogs
   }
 }

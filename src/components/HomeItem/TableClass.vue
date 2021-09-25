@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid >
+  <v-container fluid>
     <v-dialog
         v-model="dialog"
         max-width="500px"
@@ -8,7 +8,7 @@
 
 
       <v-card>
-        <v-card-title >
+        <v-card-title>
           <span class="headline">{{ formTitle }}</span>
         </v-card-title>
 
@@ -120,7 +120,7 @@
               md="4"
               lg="3"
           >
-            <v-card  class="card"    @click="goClass(item.pid)" >
+            <v-card class="card" @click="goClass(item.pid)">
               <v-card-title class="subheading font-weight-bold title">
                 <span>{{ item.name }}</span>
 
@@ -172,10 +172,7 @@
             align="center"
             justify="center"
         >
-
-
           <v-spacer></v-spacer>
-
           <span
               class="mr-4
             grey--text"
@@ -217,17 +214,17 @@ import {
 import {ifthen} from "../../network/FN";
 
 export default {
-  data () {
+  data() {
     return {
       search: '',
       filter: {},
-      addItem:{},
+      addItem: {},
       page: 1,
       itemsPerPage: 12,
       sortBy: 'name',
       editedIndex: -1,
       dialog: false,
-      dialogDelete:false,
+      dialogDelete: false,
       editedItem: {
         name: null,
         pid: null,
@@ -239,24 +236,24 @@ export default {
       keys: [
         'Name',
         'Pid',
-
       ],
       items: [
-        {
-        }
+        {}
       ],
     }
   },
-  props:{
-    ClassName:{
-      type:Array,
+
+  props: {
+    ClassName: {
+      type: Array,
 
     }
   },
+
   created() {
     getClassFromApi(this.ClassName.cid)
-        .then(res=>{
-          if(ifthen(res)) {
+        .then(res => {
+          if (ifthen(res)) {
 
             this.items = []
             for (let i = 0; i < res.data.list.length; i++) {
@@ -267,117 +264,135 @@ export default {
             }
           }
         })
-        .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取班级信息失败请重新尝试或检查网络连接'})
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '获取班级信息失败请重新尝试或检查网络连接'
+        })
   },
+
   computed: {
-    cid(){
-      return this.ClassName.cid+''
+    cid() {
+      return this.ClassName.cid + ''
     },
-    formTitle () {
+
+    formTitle() {
       return this.editedIndex === -1 ? '新增学生信息' : '编辑学生信息'
     },
-    numberOfPages () {
+
+    numberOfPages() {
       return Math.ceil(this.items.length / this.itemsPerPage)
     },
-    filteredKeys () {
+
+    filteredKeys() {
       return this.keys.filter(key => key !== 'Name')
     },
   },
+
   methods: {
-    editItem (item) {
+    editItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    close () {
+
+    close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
-    save () {
-      if (this.editedIndex > -1) {
-        if(this.editedItem.name&&this.editedItem.pid){
 
-          updateClassListFromApi(this.editedItem,this.ClassName.cid)
-              .then((res)=>{
-                if(ifthen(res)) {
-                  this.$set(this.items,this.editedIndex,this.editedItem)
+    save() {
+      if (this.editedIndex > -1) {
+        if (this.editedItem.name && this.editedItem.pid) {
+          updateClassListFromApi(this.editedItem, this.ClassName.cid)
+              .then((res) => {
+                if (ifthen(res)) {
+                  this.$set(this.items, this.editedIndex, this.editedItem)
                   this.close()
                 }
               })
-              .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
-
-
-        }else{
+              .catch(() => {
+                this.$refs.failDialogs.dialog = true;
+                this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+              })
+        } else {
           alert('请输入完整')
         }
       } else {
-        if(this.editedItem.pid&&this.editedItem.name){
+        if (this.editedItem.pid && this.editedItem.name) {
 
-          addClassListFromApi(this.editedItem,this.ClassName.cid)
-              .then((res)=>{
-                if(ifthen(res)) {
+          addClassListFromApi(this.editedItem, this.ClassName.cid)
+              .then((res) => {
+                if (ifthen(res)) {
                   this.items.push(this.editedItem)
                   this.close()
                 }
               })
-              .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='添加失败请重新尝试或检查网络连接'})
+              .catch(() => {
+                this.$refs.failDialogs.dialog = true;
+                this.$refs.failDialogs.text = '添加失败请重新尝试或检查网络连接'
+              })
 
 
-        }else{
+        } else {
           alert('请输入完整')
         }
       }
     },
-    closeDelete () {
+
+    closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
-    deleteItem (item) {
 
+    deleteItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
-
     },
 
-    deleteItemConfirm () {
-        deleteClassListFromApi(this.editedItem)
-          .then((res)=>{
-            if(ifthen(res)) {
+    deleteItemConfirm() {
+      deleteClassListFromApi(this.editedItem)
+          .then((res) => {
+            if (ifthen(res)) {
               this.items.splice(this.editedIndex, 1)
               this.closeDelete()
             }
-              })
-          .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='删除失败请重新尝试或检查网络连接'})
-
-
-
+          })
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '删除失败请重新尝试或检查网络连接'
+          })
     },
-    goClass(pid){
-      this.$router.push('/ClassCr/'+pid)
+
+    goClass(pid) {
+      this.$router.push('/ClassCr/' + pid)
     },
-    nextPage () {
+
+    nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1
     },
-    formerPage () {
+
+    formerPage() {
       if (this.page - 1 >= 1) this.page -= 1
     },
 
   },
-  components:{
+
+  components: {
     failDialogs
   },
-  watch:{
-    ClassName(val){
+
+  watch: {
+    ClassName(val) {
       getClassFromApi(this.ClassName.cid)
-          .then(res=>{
-            if(ifthen(res)) {
+          .then(res => {
+            if (ifthen(res)) {
               this.items = []
               for (let i = 0; i < res.data.list.length; i++) {
                 this.addItem['name'] = res.data.list[i].name
@@ -387,29 +402,34 @@ export default {
               }
             }
           })
-          .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取班级信息失败请重新尝试或检查网络连接'})
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '获取班级信息失败请重新尝试或检查网络连接'
+          })
     },
 
-    dialog (val) {
+    dialog(val) {
       val || this.close()
     },
-    dialogDelete (val) {
+
+    dialogDelete(val) {
       val || this.closeDelete()
     },
   }
 }
 </script>
 <style scoped>
-.title{
+.title {
   min-height: 100px;
   min-width: 285px;
-
 }
- .card:hover{
+
+.card:hover {
   box-shadow: #c0ccda 7px 7px;
 }
- .btn:hover{
-   box-shadow: #c0ccda 2px 2px;
 
- }
+.btn:hover {
+  box-shadow: #c0ccda 2px 2px;
+
+}
 </style>

@@ -9,9 +9,9 @@
 
 <script>
 export default {
-name: "navItem",
-  props:{
-    navItemData:{
+  name: "navItem",
+  props: {
+    navItemData: {
       type: Object,
     }
   }

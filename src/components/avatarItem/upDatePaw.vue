@@ -10,22 +10,21 @@
 
       <template v-slot:activator="{ on, attrs }">
 
-
-          <v-list-item
-              v-bind="attrs"
-              v-on="on">
-            <v-list-item-action>
-              <v-icon>mdi-cog</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>修改密码</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-list-item
+            v-bind="attrs"
+            v-on="on">
+          <v-list-item-action>
+            <v-icon>mdi-cog</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>修改密码</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
       </template>
 
       <v-card
-      :loading="isUpdating"
+          :loading="isUpdating"
       >
         <v-list>
           <v-list-item>
@@ -36,11 +35,11 @@
 
               >
             </v-list-item-avatar>
-            <h3>{{username}}</h3>
+            <h3>{{ username }}</h3>
             <failDialogs ref="failDialogs"></failDialogs>
 
           </v-list-item>
-            <v-list-item>
+          <v-list-item>
             <v-text-field
                 v-model="oldPaw"
                 :disabled="isUpdating"
@@ -50,7 +49,7 @@
                 color="blue-grey lighten-2"
                 label="请输入当前密码"
             ></v-text-field>
-            </v-list-item>
+          </v-list-item>
           <v-list-item>
             <v-text-field
                 v-model="newPaw"
@@ -87,51 +86,52 @@
   </div>
 </template>
 <script>
-  import {updateAdminPasswordFromApi} from "../../network/adminApi";
+import {updateAdminPasswordFromApi} from "../../network/adminApi";
 import failDialogs from "../HomeItem/failDialogs";
-  import $store from '../../store'
-  import {ifthen} from "../../network/FN";
-  export default {
+import $store from '../../store'
+import {ifthen} from "../../network/FN";
+
+export default {
   data: () => ({
     oldPaw: '',
-    newPaw:'',
-    image:$store.state.adminImage,
-    isUpdating:false,
-     menu: false,
+    newPaw: '',
+    image: $store.state.adminImage,
+    isUpdating: false,
+    menu: false,
 
-}),
-    props:{
-      username: {
-        type:String
-      }
-    },
-    methods:{
-      submit(){
-        this.isUpdating=true
+  }),
 
-        updateAdminPasswordFromApi(this.username,this.oldPaw,this.newPaw)
-            .then((res)=>{
-              if(ifthen(res)) {
-                this.$refs.failDialogs.dialog = true;
-                this.$refs.failDialogs.text = '修改成功'
-                this.menu = false
-                this.isUpdating = false
-                this.oldPaw = ''
-                this.newPaw = ''
-              }
-        })
-        .catch(()=>{
-          this.$refs.failDialogs.dialog=true;
-          this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'
-          this.isUpdating=false
-        })
-
-
-      }
-    },
-    components:{
-      failDialogs
+  props: {
+    username: {
+      type: String
     }
+  },
+
+  methods: {
+    submit() {
+      this.isUpdating = true
+      updateAdminPasswordFromApi(this.username, this.oldPaw, this.newPaw)
+          .then((res) => {
+            if (ifthen(res)) {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '修改成功'
+              this.menu = false
+              this.isUpdating = false
+              this.oldPaw = ''
+              this.newPaw = ''
+            }
+          })
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+            this.isUpdating = false
+          })
+    }
+  },
+
+  components: {
+    failDialogs
+  }
 }
 </script>
 

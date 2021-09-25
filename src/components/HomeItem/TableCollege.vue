@@ -129,7 +129,7 @@
     <template v-slot:expanded-item="{ headers, item }">
 
       <td :colspan="headers.length">
-        <TableClass :ClassName=item ></TableClass>
+        <TableClass :ClassName=item></TableClass>
 
       </td>
     </template>
@@ -147,106 +147,105 @@ import {
   updateCollegeFromApi
 } from "../../network/collegeApi";
 import {ifthen} from "../../network/FN";
+
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
     expanded: [],
-    isDisabled:true,
+    isDisabled: true,
     headers: [
-      { text: '学院名称', align: 'start', value: 'name', },
-      { text: '学院ID', value: 'cid' },
-      { text: '操作', value: 'actions', sortable: false },
-      { text: '展开', value: 'data-table-expand',sortable: false  },
+      {text: '学院名称', align: 'start', value: 'name',},
+      {text: '学院ID', value: 'cid'},
+      {text: '操作', value: 'actions', sortable: false},
+      {text: '展开', value: 'data-table-expand', sortable: false},
 
     ],
-    addItem:{},
+    addItem: {},
     desserts: [],
     editedIndex: -1,
     editedItem: {
       name: '',
       cid: null,
-
     },
     defaultItem: {
       name: '',
       cid: null,
 
     },
-
-
   }),
 
   computed: {
-
-    formTitle () {
-      this.editedIndex === -1 ? this.isDisabled=false : this.isDisabled=true
+    formTitle() {
+      this.editedIndex === -1 ? this.isDisabled = false : this.isDisabled = true
       return this.editedIndex === -1 ? '添加学院' : '修改学院信息'
     },
   },
-components:{
-  TableClass,
-  failDialogs
-},
+
+  components: {
+    TableClass,
+    failDialogs
+  },
+
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close()
     },
-    dialogDelete (val) {
+
+    dialogDelete(val) {
       val || this.closeDelete()
     },
   },
 
-  created () {
+  created() {
     getcollegeFromApi()
-      .then(res=>{
-        if(ifthen(res)) {
+        .then(res => {
+          if (ifthen(res)) {
 
-          this.desserts = []
-          for (let i = 0; i < res.data.list.length; i++) {
-            this.addItem['name'] = res.data.list[i].name
-            this.addItem['cid'] = res.data.list[i].cid
-            this.desserts.push(this.addItem);
-            this.addItem = []
+            this.desserts = []
+            for (let i = 0; i < res.data.list.length; i++) {
+              this.addItem['name'] = res.data.list[i].name
+              this.addItem['cid'] = res.data.list[i].cid
+              this.desserts.push(this.addItem);
+              this.addItem = []
+            }
           }
-        }
-      })
-        .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取学院信息失败请重新尝试或检查网络连接'})
+        })
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '获取学院信息失败请重新尝试或检查网络连接'
+        })
 
   },
 
   methods: {
-
-
-    editItem (item) {
+    editItem(item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-
     },
 
-    deleteItem (item) {
-
-          this.editedIndex = this.desserts.indexOf(item)
-          this.editedItem = Object.assign({}, item)
-          this.dialogDelete = true
-
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
     },
 
-    deleteItemConfirm () {
+    deleteItemConfirm() {
       deleteCollegeFromApi(this.editedItem)
-        .then((res)=>{
-          if(ifthen(res)) {
-
-            this.desserts.splice(this.editedIndex, 1)
-            this.closeDelete()
-          }
-        })
-          .catch((err)=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='删除失败请重新尝试或检查网络连接'})
-
+          .then((res) => {
+            if (ifthen(res)) {
+              this.desserts.splice(this.editedIndex, 1)
+              this.closeDelete()
+            }
+          })
+          .catch((err) => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '删除失败请重新尝试或检查网络连接'
+          })
     },
 
-    close () {
+    close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -254,7 +253,7 @@ components:{
       })
     },
 
-    closeDelete () {
+    closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -262,30 +261,31 @@ components:{
       })
     },
 
-    save () {
-
+    save() {
       if (this.editedIndex > -1) {
-        updateCollegeFromApi(this.editedItem.cid,this.editedItem.name)
-            .then((res)=>{
-              if(ifthen(res)) {
-
+        updateCollegeFromApi(this.editedItem.cid, this.editedItem.name)
+            .then((res) => {
+              if (ifthen(res)) {
                 Object.assign(this.desserts[this.editedIndex], this.editedItem)
                 this.close()
               }
-
             })
-            .catch((err)=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
-
+            .catch((err) => {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+            })
       } else {
-        addCollegeFromApi(this.editedItem.cid,this.editedItem.name)
-            .then((res)=>{
-              if(ifthen(res)){
-              this.desserts.push(this.editedItem)
+        addCollegeFromApi(this.editedItem.cid, this.editedItem.name)
+            .then((res) => {
+              if (ifthen(res)) {
+                this.desserts.push(this.editedItem)
                 this.close()
               }
             })
-            .catch((err)=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='添加失败请重新尝试或检查网络连接';})
-
+            .catch((err) => {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '添加失败请重新尝试或检查网络连接';
+            })
       }
 
     },

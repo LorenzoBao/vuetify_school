@@ -8,9 +8,9 @@
 import TableSuperAdmin from "../../../components/HomeItem/TableSuperAdmin";
 
 export default {
-name: "superAdmin",
-  components:{
-  TableSuperAdmin
+  name: "superAdmin",
+  components: {
+    TableSuperAdmin
   }
 }
 </script>

@@ -24,7 +24,7 @@
           <timePicker ref="times"></timePicker>
         </v-col>
 
-        <v-col  cols="2.7">
+        <v-col cols="2.7">
           <v-autocomplete
               v-model="collegeValue"
               :items="collegeItem"
@@ -56,11 +56,12 @@
               no-data-text="请选择班级"
           ></v-autocomplete>
         </v-col>
-        <template >
+        <template>
           <v-btn
               color="primary"
               @click="exportTable()"
-          >导出表格</v-btn>
+          >导出表格
+          </v-btn>
         </template>
         <failDialogs ref="failDialogs"></failDialogs>
 
@@ -202,7 +203,7 @@
 </template>
 
 <script>
-import { ifthen, retimeData, timeData} from "../../network/FN";
+import {ifthen, retimeData, timeData} from "../../network/FN";
 import timePicker from "../timeData/timePicker";
 
 import failDialogs from "./failDialogs";
@@ -219,36 +220,35 @@ import {getcollegeFromApi} from "../../network/collegeApi";
 
 
 export default {
-
   name: "Table",
 
   data: () => ({
-    collegeItem:['加载中'],
-    ClassItem:['请选择学院'],
-    StuItem:['请选择班级'],
-    ClassIdName:{},
-    StuIdName:{},
-    collegeItemName:{},
-    schoolYearValue:null,
+    collegeItem: ['加载中'],
+    ClassItem: ['请选择学院'],
+    StuItem: ['请选择班级'],
+    ClassIdName: {},
+    StuIdName: {},
+    collegeItemName: {},
+    schoolYearValue: null,
     collegeValue: null,
-    ClassValue:null,
-    StuValue:null,
-    isLoading:false,
+    ClassValue: null,
+    StuValue: null,
+    isLoading: false,
     dialog: false,
     dialogDelete: false,
-    deleteAPI:null,
-    editAPI:null,
-    aItem:null,
+    deleteAPI: null,
+    editAPI: null,
+    aItem: null,
     headers: [
-      { text: '时间',align: 'start', value: 'time',width:250},
-      { text: '学号', value: 'number' },
-      { text: '姓名', value: 'name' },
-      { text: '科目', value: 'course' },
-      { text: '事件', value: 'LorT',},
-      { text: '描述', value: 'describe', sortable: false },
-      { text: '操作', value: 'actions', sortable: false },
+      {text: '时间', align: 'start', value: 'time', width: 250},
+      {text: '学号', value: 'number'},
+      {text: '姓名', value: 'name'},
+      {text: '科目', value: 'course'},
+      {text: '事件', value: 'LorT',},
+      {text: '描述', value: 'describe', sortable: false},
+      {text: '操作', value: 'actions', sortable: false},
     ],
-    desserts: [      ],
+    desserts: [],
 
     editedIndex: -1,
     editedItem: {
@@ -257,8 +257,8 @@ export default {
       name: null,
       course: null,
       LorT: null,
-      describe:null,
-      oldTime:null
+      describe: null,
+      oldTime: null
     },
     addItem: {
       time: null,
@@ -266,9 +266,9 @@ export default {
       name: null,
       course: null,
       LorT: null,
-      describe:null,
-      createDate:null,
-      oldTime:null
+      describe: null,
+      createDate: null,
+      oldTime: null
 
     },
     defaultItem: {
@@ -277,38 +277,35 @@ export default {
       name: null,
       course: null,
       LorT: null,
-      describe:null,
-      oldTime:null
+      describe: null,
+      oldTime: null
 
     },
   }),
 
   computed: {
-    formTitle () {
-      this.editedIndex === -1 ? this.editedItem.time=this.nowTime:this.editedItem.time=this.desserts[this.editedIndex].time
+    formTitle() {
+      this.editedIndex === -1 ? this.editedItem.time = this.nowTime : this.editedItem.time = this.desserts[this.editedIndex].time
       return this.editedIndex === -1 ? '新增学生信息' : '编辑学生信息'
     },
-
-
   },
 
   watch: {
-
-    dialog (val) {
+    dialog(val) {
       val || this.close()
     },
-    dialogDelete (val) {
+
+    dialogDelete(val) {
       val || this.closeDelete()
     },
 
-
-    collegeValue(val){
-      this.isLoading=true
+    collegeValue(val) {
+      this.isLoading = true
       // this.ClassItem=null
-      val=this.collegeItemName[val]
+      val = this.collegeItemName[val]
       getClassFromApi(val)
-          .then(res=>{
-            if(ifthen(res)) {
+          .then(res => {
+            if (ifthen(res)) {
               this.StuItem = []
               this.ClassItem = []
               for (let i = 0; i < res.data.list.length; i++) {
@@ -319,21 +316,24 @@ export default {
               this.isLoading = false
             }
           })
-          .catch(()=>{this.ClassItem=['未查询到数据'];
-          this.isLoading=false;
-            this.$refs.failDialogs.dialog=true;
-            this.$refs.failDialogs.text='获取班级信息失败请重新尝试或检查网络连接'})
+          .catch(() => {
+            this.ClassItem = ['未查询到数据'];
+            this.isLoading = false;
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '获取班级信息失败请重新尝试或检查网络连接'
+          })
 
     },
-    ClassValue(val){
-      let pid=this.ClassIdName[val]
+
+    ClassValue(val) {
+      let pid = this.ClassIdName[val]
       // this.StuIdName=''
       // this.StuItem=''
-      this.isLoading=true
+      this.isLoading = true
 
       getStuFromApi(this.ClassIdName[val])
-          .then(res=>{
-            if(ifthen(res)) {
+          .then(res => {
+            if (ifthen(res)) {
 
               this.StuItem = []
               for (let i = 0; i < res.data.list.length; i++) {
@@ -346,16 +346,16 @@ export default {
               this.isLoading = false
             }
           })
-          .catch(()=>{this.StuItem=['未查询到数据'];
-          this.isLoading=false;
-          this.$refs.failDialogs.dialog=true;
-          this.$refs.failDialogs.text='获取学生信息失败请重新尝试或检查网络连接'
+          .catch(() => {
+            this.StuItem = ['未查询到数据'];
+            this.isLoading = false;
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '获取学生信息失败请重新尝试或检查网络连接'
           })
 
-      getClassTableFromApi(pid,this.$refs.times.dates[0],this.$refs.times.dates[1])
-          .then(res=>{
-            if(ifthen(res)) {
-
+      getClassTableFromApi(pid, this.$refs.times.dates[0], this.$refs.times.dates[1])
+          .then(res => {
+            if (ifthen(res)) {
               this.desserts = []
               for (let i = 0; i < res.data.list.length; i++) {
                 for (let j = 0; j < res.data.list[i].detailsList.length; j++) {
@@ -370,30 +370,26 @@ export default {
                   this.addItem = {}
                 }
               }
-
               // this.$set(this.desserts, i, res.data.list[i].name)
               // this.ClassIdName[res.data.list[i].name]=res.data.list[i].pid
-
               this.isLoading = false
             }
           })
-          .catch(()=>{
-            this.$refs.failDialogs.dialog=true
-            this.isLoading=false
-
-            this.$refs.failDialogs.text='获取班级缺勤信息失败请重新尝试或检查网络连接'
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true
+            this.isLoading = false
+            this.$refs.failDialogs.text = '获取班级缺勤信息失败请重新尝试或检查网络连接'
           })
     },
 
-
-    StuValue(val){
-      let sid=this.StuIdName[val]
-      this.isLoading=true
-      this.desserts=[]
-      this.addItem=[]
-      getStuTableFromApi(sid,this.$refs.times.dates[0],this.$refs.times.dates[1])
-          .then(res=>{
-            if(ifthen(res)) {
+    StuValue(val) {
+      let sid = this.StuIdName[val]
+      this.isLoading = true
+      this.desserts = []
+      this.addItem = []
+      getStuTableFromApi(sid, this.$refs.times.dates[0], this.$refs.times.dates[1])
+          .then(res => {
+            if (ifthen(res)) {
 
               for (let i = 0; i < res.data.list.length; i++) {
                 this.addItem['oldTime'] = res.data.list[i].createDate
@@ -410,19 +406,18 @@ export default {
               this.isLoading = false
             }
           })
-          .catch(()=>{this.isLoading=false;
-          this.$refs.failDialogs.dialog=true;
-          this.$refs.failDialogs.text='获取学生缺勤信息失败请重新尝试或检查网络连接'})
-
+          .catch(() => {
+            this.isLoading = false;
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '获取学生缺勤信息失败请重新尝试或检查网络连接'
+          })
     }
-
-
   },
 
   created() {
     getcollegeFromApi()
-        .then(res=>{
-          if(ifthen(res)) {
+        .then(res => {
+          if (ifthen(res)) {
 
             for (let i = 0; i < res.data.list.length; i++) {
               this.$set(this.collegeItem, i, res.data.list[i].name)
@@ -430,80 +425,87 @@ export default {
             }
           }
         })
-        .catch(()=>{this.$refs.failDialogs.dialog=true;
-        this.$refs.failDialogs.text='获取学院信息失败请重新尝试或检查网络连接'})
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '获取学院信息失败请重新尝试或检查网络连接'
+        })
 
   },
-mounted() {
-  getClassTableFromApi(1941054,this.$refs.times.dates[0],this.$refs.times.dates[1])
-      .then(res=>{
-        if(ifthen(res)) {
-          this.desserts = []
-          for (let i = 0; i < res.data.list.length; i++) {
-            for (let j = 0; j < res.data.list[i].detailsList.length; j++) {
-              this.addItem['oldTime'] = res.data.list[i].detailsList[j].createDate
-              this.addItem['number'] = res.data.list[i].detailsList[j].sid
-              this.addItem['course'] = res.data.list[i].detailsList[j].course
-              this.addItem['name'] = res.data.list[i].student.name
-              this.addItem['LorT'] = res.data.list[i].detailsList[j].reason
-              this.addItem['describe'] = res.data.list[i].detailsList[j].remarks
-              this.addItem['time'] = timeData(this.addItem['oldTime'])
-              this.desserts.push(this.addItem);
-              this.addItem = {}
-            }
-          }
-          this.isLoading = false
-        }
-      })
-      .catch(()=>{
-        this.$refs.failDialogs.dialog=true
-        this.isLoading=false
-        this.$refs.failDialogs.text='获取班级缺勤信息失败请重新尝试或检查网络连接'
-      })
 
-},
+  mounted() {
+    getClassTableFromApi(1941054, this.$refs.times.dates[0], this.$refs.times.dates[1])
+        .then(res => {
+          if (ifthen(res)) {
+            this.desserts = []
+            for (let i = 0; i < res.data.list.length; i++) {
+              for (let j = 0; j < res.data.list[i].detailsList.length; j++) {
+                this.addItem['oldTime'] = res.data.list[i].detailsList[j].createDate
+                this.addItem['number'] = res.data.list[i].detailsList[j].sid
+                this.addItem['course'] = res.data.list[i].detailsList[j].course
+                this.addItem['name'] = res.data.list[i].student.name
+                this.addItem['LorT'] = res.data.list[i].detailsList[j].reason
+                this.addItem['describe'] = res.data.list[i].detailsList[j].remarks
+                this.addItem['time'] = timeData(this.addItem['oldTime'])
+                this.desserts.push(this.addItem);
+                this.addItem = {}
+              }
+            }
+            this.isLoading = false
+          }
+        })
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true
+          this.isLoading = false
+          this.$refs.failDialogs.text = '获取班级缺勤信息失败请重新尝试或检查网络连接'
+        })
+
+  },
+
   methods: {
-    nowTime(){
+    nowTime() {
       const myDate = new Date();
-      this.editedItem.time=myDate.toLocaleDateString()+' '+myDate.getHours()+':'+myDate.getMinutes()
+      this.editedItem.time = myDate.toLocaleDateString() + ' ' + myDate.getHours() + ':' + myDate.getMinutes()
     },
-    exportTable(){
+
+    exportTable() {
       let val
       let ID
-      this.StuValue?val='student':val='class'
-      this.StuValue?ID=this.StuIdName[this.StuValue]:ID=this.ClassIdName[this.ClassValue]
-      exportTableFromApi(val,this.$refs.times.dates[0],this.$refs.times.dates[1],ID)
-      .then((res) => {
+      this.StuValue ? val = 'student' : val = 'class'
+      this.StuValue ? ID = this.StuIdName[this.StuValue] : ID = this.ClassIdName[this.ClassValue]
+      exportTableFromApi(val, this.$refs.times.dates[0], this.$refs.times.dates[1], ID)
+          .then((res) => {
 
-          const blob = res;
-          const reader = new FileReader();
-          reader.responseType = 'blob';
-          reader.readAsDataURL(blob);
-          reader.onload = (e) => {
-            const a = document.createElement('a');
-            const name = res.headers;
-            a.download = this.$refs.times.dates[0] + '到' + this.$refs.times.dates[1] + this.collegeValue + '学院' + this.ClassValue + this.StuValue + `.xlsx`;
-            // 后端设置的文件名称在res.headers的 "content-disposition": "form-data; name=\"attachment\"; filename=\"20181211191944.zip\"",
-            a.href = e.target.result;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          };
+            const blob = res;
+            const reader = new FileReader();
+            reader.responseType = 'blob';
+            reader.readAsDataURL(blob);
+            reader.onload = (e) => {
+              const a = document.createElement('a');
+              const name = res.headers;
+              a.download = this.$refs.times.dates[0] + '到' + this.$refs.times.dates[1] + this.collegeValue + '学院' + this.ClassValue + this.StuValue + `.xlsx`;
+              // 后端设置的文件名称在res.headers的 "content-disposition": "form-data; name=\"attachment\"; filename=\"20181211191944.zip\"",
+              a.href = e.target.result;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            };
 
-      })
-      .catch(()=>{this.$refs.failDialogs.dialog=true;
-      this.$refs.failDialogs.text='获取文件失败请重新尝试或检查网络连接'})
+          })
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '获取文件失败请重新尝试或检查网络连接'
+          })
 
     },
 
-    editItem (item) {
+    editItem(item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      this.editAPI=item
+      this.editAPI = item
     },
 
-    deleteItem (item) {
+    deleteItem(item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
@@ -511,21 +513,22 @@ mounted() {
 
     },
 
-    deleteItemConfirm () {
+    deleteItemConfirm() {
       deleteStuFromApi(this.editedItem)
-          .then((res)=>{
-            if(ifthen(res)) {
+          .then((res) => {
+            if (ifthen(res)) {
               this.desserts.splice(this.editedIndex, 1)
               this.closeDelete()
             }
           })
-          .catch(()=>{this.$refs.failDialogs.dialog=true;
-          this.$refs.failDialogs.text='删除失败请重新尝试或检查网络连接'})
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '删除失败请重新尝试或检查网络连接'
+          })
 
     },
 
-    close () {
-
+    close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -533,7 +536,7 @@ mounted() {
       })
     },
 
-    closeDelete () {
+    closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -541,50 +544,47 @@ mounted() {
       })
     },
 
-    save () {
+    save() {
       if (this.editedIndex > -1) {
-        if(this.editedItem.course&&this.editedItem.name&&this.editedItem.time&&this.editedItem.number){
-
+        if (this.editedItem.course && this.editedItem.name && this.editedItem.time && this.editedItem.number) {
           updateStuFromApi(this.editedItem)
-              .then((res)=>{
-                if(ifthen(res)) {
-
+              .then((res) => {
+                if (ifthen(res)) {
                   Object.assign(this.desserts[this.editedIndex], this.editedItem)
                 }
-               })
-              .catch(()=>{this.$refs.failDialogs.dialog=true;
-              this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
-        }else{
-          this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='请输入完整'
+              })
+              .catch(() => {
+                this.$refs.failDialogs.dialog = true;
+                this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+              })
+        } else {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '请输入完整'
         }
       } else {
-        if(this.editedItem.course&&this.editedItem.name&&this.editedItem.time&&this.editedItem.number){
-          let time=retimeData(this.editedItem.time)
+        if (this.editedItem.course && this.editedItem.name && this.editedItem.time && this.editedItem.number) {
+          let time = retimeData(this.editedItem.time)
 
-          addStuFromApi(this.editedItem,time)
-              .then((res)=>{
-                if(ifthen(res)) {
-
+          addStuFromApi(this.editedItem, time)
+              .then((res) => {
+                if (ifthen(res)) {
                   this.desserts.push(this.editedItem);
                   this.close()
                 }
               })
-              .catch(()=>{this.$refs.failDialogs.dialog=true;
-              this.$refs.failDialogs.text='添加失败请重新尝试或检查网络连接'})
-        }else{
-          this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='请输入完整'
+              .catch(() => {
+                this.$refs.failDialogs.dialog = true;
+                this.$refs.failDialogs.text = '添加失败请重新尝试或检查网络连接'
+              })
+        } else {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '请输入完整'
         }
       }
-
-
     },
-
-
-
-
-
   },
-  components:{
+
+  components: {
     timePicker,
     failDialogs
   }
@@ -592,10 +592,11 @@ mounted() {
 </script>
 
 <style scoped>
-.col{
+.col {
   height: 80px;
 }
-#t{
+
+#t {
   height: 50px;
 }
 </style>

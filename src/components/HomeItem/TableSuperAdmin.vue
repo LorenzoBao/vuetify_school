@@ -9,10 +9,10 @@
         <v-card-text>
           <v-container>
 
-                <v-text-field
-                    v-model="pawUserName"
-                    label="请输入要重置密码的账号"
-                ></v-text-field>
+            <v-text-field
+                v-model="pawUserName"
+                label="请输入要重置密码的账号"
+            ></v-text-field>
           </v-container>
         </v-card-text>
 
@@ -160,7 +160,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <failDialogs  ref="failDialogs"></failDialogs>
+    <failDialogs ref="failDialogs"></failDialogs>
     <v-data-iterator
         :items="items"
         :items-per-page.sync="itemsPerPage"
@@ -247,7 +247,7 @@
 
               <v-card-title class="subheading font-weight-bold">
               </v-card-title>
-              <img :src="item.image" width="150px" height="200px"   alt="未获取图片">
+              <img :src="item.image" width="150px" height="200px" alt="未获取图片">
               <v-icon
                   small
                   class="mr-2"
@@ -361,12 +361,12 @@ import {
 import {ifthen, timeData} from "../../network/FN";
 
 export default {
-  name:'TableStu',
-  data () {
+  name: 'TableStu',
+  data() {
     return {
-      pawDialog:false,
-      pawUserName:'',
-      addItem:{},
+      pawDialog: false,
+      pawUserName: '',
+      addItem: {},
       itemsPerPageArray: [4, 8, 12],
       search: '',
       filter: {},
@@ -376,28 +376,27 @@ export default {
       sortBy: 'username',
       editedIndex: -1,
       dialog: false,
-      dialogDelete:false,
+      dialogDelete: false,
       editedItem: {
-        create:null,
-        username:null,
-        password:null,
-        pid:null,
-        remark:null,
-        type:null,
-        enable:null,
-        image:null
+        create: null,
+        username: null,
+        password: null,
+        pid: null,
+        remark: null,
+        type: null,
+        enable: null,
+        image: null
       },
       defaultItem: {
-        create:null,
-        username:null,
-        password:null,
-        pid:null,
-        remark:null,
-        type:null,
-        enable:null,
-        image:null
+        create: null,
+        username: null,
+        password: null,
+        pid: null,
+        remark: null,
+        type: null,
+        enable: null,
+        image: null
       },
-
       keys: [
         'username',
         'password',
@@ -406,28 +405,23 @@ export default {
         'type',
         'enable',
         'create',
-
       ],
       items: [
-        {
-
-        }
+        {}
       ],
     }
   },
 
   created() {
     getAdminFromApi()
-        .then(res=>{
-          if(ifthen(res)) {
-
+        .then(res => {
+          if (ifthen(res)) {
             this.items = []
             for (let i = 0; i < res.data.list.length; i++) {
               getImage(res.data.list[i].username)
                   .then(res => {
-                      this.addItem['image'] = res.data
+                    this.addItem['image'] = res.data
                   })
-
               this.addItem['create'] = res.data.list[i].createTime
               this.addItem['username'] = res.data.list[i].username
               this.addItem['password'] = res.data.list[i].password
@@ -441,140 +435,158 @@ export default {
             }
           }
         })
-        .catch(()=>{
-          this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取信息失败，请重新尝试或检查网络连接'
+        .catch(() => {
+          this.$refs.failDialogs.dialog = true;
+          this.$refs.failDialogs.text = '获取信息失败，请重新尝试或检查网络连接'
         })
   },
+
   computed: {
-    formTitle () {
+    formTitle() {
       return this.editedIndex === -1 ? '新增管理员' : '编辑管理员信息'
     },
-    numberOfPages () {
+
+    numberOfPages() {
       return Math.ceil(this.items.length / this.itemsPerPage)
     },
-    filteredKeys () {
+
+    filteredKeys() {
       return this.keys.filter(key => key !== 'Name')
     },
   },
+
   methods: {
-    notRePaw(){
-      this.pawDialog=false
-      this.pawUserName=''
+    notRePaw() {
+      this.pawDialog = false
+      this.pawUserName = ''
     },
-    rePaw(){
+    rePaw() {
       reAdminPaw(this.pawUserName)
-      .then(res=>{
-        if(ifthen(res)) {
-          this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='重置成功'
-          this.pawDialog=false
-        }
-      })
-      .catch(()=>{
-        this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='重置失败请重新尝试或检查网络连接'
-      })
+          .then(res => {
+            if (ifthen(res)) {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '重置成功'
+              this.pawDialog = false
+            }
+          })
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '重置失败请重新尝试或检查网络连接'
+          })
     },
-    editItem (item) {
+
+    editItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    close () {
+
+    close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
-    save () {
+
+    save() {
       if (this.editedIndex > -1) {
-
-          updateAdminListFromApi(this.editedItem)
-              .then((res)=>{
-                if(ifthen(res)) {
-                  this.$set(this.items,this.editedIndex,this.editedItem)
-                  this.close()
-                }
-              })
-              .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='修改失败请重新尝试或检查网络连接'})
+        updateAdminListFromApi(this.editedItem)
+            .then((res) => {
+              if (ifthen(res)) {
+                this.$set(this.items, this.editedIndex, this.editedItem)
+                this.close()
+              }
+            })
+            .catch(() => {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '修改失败请重新尝试或检查网络连接'
+            })
       } else {
-        this.addItem=this.editedItem
-
+        this.addItem = this.editedItem
         this.imageToBase64(this.editedItem.image)
         addAdminListFromApi(this.addItem)
-              .then((res)=>{
-                if(ifthen(res)) {
-                  addImage(this.addItem.image, this.addItem.username)
-                      .then((res) => {
-                          this.items.push(this.editedItem)
-                          this.close()
-
-                      })
-                      .catch(() => {
-                        this.$refs.failDialogs.dialog = true;
-                        this.$refs.failDialogs.text = '添加图片失败请重新尝试或检查网络连接'
-                      })
-                }
-              })
-
-              .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='添加失败请重新尝试或检查网络连接'})
+            .then((res) => {
+              if (ifthen(res)) {
+                addImage(this.addItem.image, this.addItem.username)
+                    .then((res) => {
+                      this.items.push(this.editedItem)
+                      this.close()
+                    })
+                    .catch(() => {
+                      this.$refs.failDialogs.dialog = true;
+                      this.$refs.failDialogs.text = '添加图片失败请重新尝试或检查网络连接'
+                    })
+              }
+            })
+            .catch(() => {
+              this.$refs.failDialogs.dialog = true;
+              this.$refs.failDialogs.text = '添加失败请重新尝试或检查网络连接'
+            })
       }
     },
-    closeDelete () {
+
+    closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
-    deleteItem (item) {
+
+    deleteItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
-    deleteItemConfirm () {
+    deleteItemConfirm() {
       deleteAdminListFromApi(this.editedItem)
-          .then((res)=>{
-            if(ifthen(res)) {
+          .then((res) => {
+            if (ifthen(res)) {
               this.items.splice(this.editedIndex, 1)
               this.closeDelete()
             }
           })
-          .catch(()=>{this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='删除失败请重新尝试或检查网络连接'})
-
-
-
-
+          .catch(() => {
+            this.$refs.failDialogs.dialog = true;
+            this.$refs.failDialogs.text = '删除失败请重新尝试或检查网络连接'
+          })
     },
-    nextPage () {
+    nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1
     },
-    formerPage () {
+
+    formerPage() {
       if (this.page - 1 >= 1) this.page -= 1
     },
-    updateItemsPerPage (number) {
+
+    updateItemsPerPage(number) {
       this.itemsPerPage = number
     },
 
-     imageToBase64 (file) {
+    imageToBase64(file) {
       let reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => {
-        this.editedItem.image=reader.result
+        this.editedItem.image = reader.result
       }
       reader.onerror = function (error) {
       }
     }
   },
-  watch:{
-    dialog (val) {
+
+  watch: {
+    dialog(val) {
       val || this.close()
     },
-    dialogDelete (val) {
+
+    dialogDelete(val) {
       val || this.closeDelete()
     },
   },
-  components:{
+
+  components: {
     failDialogs
   }
 

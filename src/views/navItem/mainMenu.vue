@@ -6,34 +6,35 @@
 
     <listItem :listData="absence"></listItem>
     <listItem :listData="college"></listItem>
-<!--    <listItem :listData="Class"></listItem>-->
-    <v-divider ></v-divider>
+    <!--    <listItem :listData="Class"></listItem>-->
+    <v-divider></v-divider>
   </v-list>
 </template>
 
 <script>
 import listItem from "../../components/navItem/listItem";
 import navItem from "../../components/navItem/navItem";
+
 export default {
-name: "navigation",
-  data(){
-    return{
-      absence:{
+  name: "navigation",
+  data() {
+    return {
+      absence: {
         data: [
-          ['缺勤记录', 'mdi-account-multiple-outline','/absence'],
+          ['缺勤记录', 'mdi-account-multiple-outline', '/absence'],
 
         ],
-        title:'缺勤',
-        icon:'mdi-home'
+        title: '缺勤',
+        icon: 'mdi-home'
       },
 
-      college:{
+      college: {
         data: [
-          ['学院管理', 'mdi-account-multiple-outline','/college'],
+          ['学院管理', 'mdi-account-multiple-outline', '/college'],
 
         ],
-        title:'学院',
-        icon:'mdi-home'
+        title: '学院',
+        icon: 'mdi-home'
       },
 
       // Class:{
@@ -45,15 +46,15 @@ name: "navigation",
       //   icon:'mdi-home'
       // },
 
-      Dashboard:{
-       to:'/Dashboard',
-       title:'首页',
-       icon:'mdi-home'
+      Dashboard: {
+        to: '/Dashboard',
+        title: '首页',
+        icon: 'mdi-home'
       }
 
-  }
+    }
   },
-  components:{
+  components: {
     listItem,
     navItem
   }

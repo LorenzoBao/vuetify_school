@@ -24,28 +24,28 @@
       <v-container id="text">
         <div style="width: 280px">
 
-            <v-text-field
-                v-model="names"
-                :disabled="isUpdating"
-                class="text"
-                filled
-                color="blue-grey lighten-2"
-                label="用户名"
-                @keyup.enter="submit()"
-            ></v-text-field>
+          <v-text-field
+              v-model="names"
+              :disabled="isUpdating"
+              class="text"
+              filled
+              color="blue-grey lighten-2"
+              label="用户名"
+              @keyup.enter="submit()"
+          ></v-text-field>
         </div>
         <div style="width: 280px">
 
-            <v-text-field
-                v-model="pas"
-                :disabled="isUpdating"
-                filled
-                class="text"
-                type="password"
-                color="blue-grey lighten-2"
-                label="密码"
-                @keyup.enter="submit()"
-            ></v-text-field>
+          <v-text-field
+              v-model="pas"
+              :disabled="isUpdating"
+              filled
+              class="text"
+              type="password"
+              color="blue-grey lighten-2"
+              label="密码"
+              @keyup.enter="submit()"
+          ></v-text-field>
         </div>
       </v-container>
     </v-form>
@@ -66,7 +66,7 @@
         登录
       </v-btn>
     </v-card-actions>
-    <failDialogs  ref="failDialogs"></failDialogs>
+    <failDialogs ref="failDialogs"></failDialogs>
   </v-card>
 </template>
 
@@ -80,102 +80,91 @@ import failDialogs from "../components/HomeItem/failDialogs";
 
 
 export default {
-name: "Sign",
-  data(){
-    return{
-      pas: VueCookies.get('password')? VueCookies.get('password'):'123456',
-      names:  VueCookies.get('username')?VueCookies.get('username'):'admin',
+  name: "Sign",
+  data() {
+    return {
+      pas: VueCookies.get('password') ? VueCookies.get('password') : '123456',
+      names: VueCookies.get('username') ? VueCookies.get('username') : 'admin',
       // password: VueCookies.get('password'),
       // username:VueCookies.get('username'),
       isUpdating: false,
     }
   },
   mounted() {
-
-    if(this.$store.state.Sing && this.names && this.pas){
-      setTimeout(()=>{
+    if (this.$store.state.Sing && this.names && this.pas) {
+      setTimeout(() => {
         this.submit()
-      },1000)
-  }
-
+      }, 1000)
+    }
   },
-  components:{
+  components: {
     failDialogs
   },
-  methods:{
-  submit(){
-    this.$refs.failDialogs.dialog=true;
-    this.$refs.failDialogs.text='登录失败，请检查用户名密码或检查网络连接'
-    this.isUpdating=true
-    request({
-      url:'/admin/login',
-      method:'post',
-      data:{
-        "password": this.pas,
-        "username": this.names
-        // "password": '123456',
-        // "username": 'admin'
-      },
-
-     //
-    })
-     .then(res=>{
-        if(res.code===500){
-          this.isUpdating=false
-          alert('登录失败，请检查用户名密码或检查网络连接')
-
-        }
-       if(ifthen(res)) {
-         this.$store.commit("setToken", res.data.token)
-         if (this.$store.state.token) {
-           alert('登录成功')
-           this.$store.commit('upDataSing')
-           VueCookies.set('username', this.names,{expires: 7})
-           VueCookies.set('password', this.pas,{expires: 7})
-           // getImage(this.names)
-           //     .then((res) => {
-           //         $store.commit('upDateAdminImage', res.data)
-           //         $store.commit('upDateAdminUserName', this.names)
-           //         }
-           //     ).catch()
-             getAdminInfo()
-                 .then(res=>{
-                   if(ifthen(res)) {
-                     $store.commit('upDateAdminInfo', res.data)
-                     this.$router.push('/college')
-                   }
-
-                 })
-                 .catch(()=>{
-                   this.$refs.failDialogs.dialog=true;this.$refs.failDialogs.text='获取个人信息失败请刷新页面'
-
-                 })
-
-
-         }
-       }
+  methods: {
+    submit() {
+      this.$refs.failDialogs.dialog = true;
+      this.$refs.failDialogs.text = '登录失败，请检查用户名密码或检查网络连接'
+      this.isUpdating = true
+      request({
+        url: '/admin/login',
+        method: 'post',
+        data: {
+          "password": this.pas,
+          "username": this.names
+          // "password": '123456',
+          // "username": 'admin'
+        },
       })
-      .catch(()=>{
+          .then(res => {
+            if (res.code === 500) {
+              this.isUpdating = false
+              alert('登录失败，请检查用户名密码或检查网络连接')
+            }
+            if (ifthen(res)) {
+              this.$store.commit("setToken", res.data.token)
+              if (this.$store.state.token) {
+                alert('登录成功')
+                this.$store.commit('upDataSing')
+                VueCookies.set('username', this.names, {expires: 7})
+                VueCookies.set('password', this.pas, {expires: 7})
+                // getImage(this.names)
+                //     .then((res) => {
+                //         $store.commit('upDateAdminImage', res.data)
+                //         $store.commit('upDateAdminUserName', this.names)
+                //         }
+                //     ).catch()
+                getAdminInfo()
+                    .then(res => {
+                      if (ifthen(res)) {
+                        $store.commit('upDateAdminInfo', res.data)
+                        this.$router.push('/college')
+                      }
+                    })
+                    .catch(() => {
+                      this.$refs.failDialogs.dialog = true;
+                      this.$refs.failDialogs.text = '获取个人信息失败请刷新页面'
 
-        this.isUpdating=false
-        alert('登录失败，请检查网络连接')
-
-      })
-
-
-
-  }
+                    })
+              }
+            }
+          })
+          .catch(() => {
+            this.isUpdating = false
+            alert('登录失败，请检查网络连接')
+          })
+    }
   }
 }
 </script>
 
 <style scoped>
-#card{
+#card {
   top: 100px;
   margin: auto;
   box-shadow: #c8c9cc 10px 10px 5px;
 }
-#text{
+
+#text {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

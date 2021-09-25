@@ -8,24 +8,18 @@
         offset-y
     >
       <template v-slot:activator="{ on, attrs }">
-
-
-          <v-avatar
-              v-bind="attrs"
-              v-on="on"
+        <v-avatar
+            v-bind="attrs"
+            v-on="on"
+        >
+          <img
+              :src="image"
+              alt="无图片"
           >
-            <img
-                :src="image"
-                alt="无图片"
-            >
-          </v-avatar>
+        </v-avatar>
       </template>
-
       <v-card>
-
         <updateInfo></updateInfo>
-
-
       </v-card>
     </v-menu>
   </div>
@@ -34,23 +28,24 @@
 <script>
 import updateInfo from "../../components/avatarItem/updateInfo";
 import $store from '../../store'
+
 export default {
   data: () => ({
     fav: true,
     menu: false,
     message: false,
     hints: true,
-    image:$store.state.adminImage,
+    image: $store.state.adminImage,
   }),
-  components:{
+  components: {
     updateInfo
   }
 }
 </script>
 
 <style scoped>
-#avatar{
-position: fixed;
+#avatar {
+  position: fixed;
   right: 30px;
 }
 </style>

@@ -1,28 +1,27 @@
 <template>
 
-   <v-breadcrumbs id="bread" :items="breadcrumbsItemData">
-     <template v-slot:item="{ item }">
-       <v-breadcrumbs-item
-            :to="item.to"
-           :disabled="item.disabled"
-       >
-         {{ item.text.toUpperCase() }}
-       </v-breadcrumbs-item>
-     </template>
-   </v-breadcrumbs>
+  <v-breadcrumbs id="bread" :items="breadcrumbsItemData">
+    <template v-slot:item="{ item }">
+      <v-breadcrumbs-item
+          :to="item.to"
+          :disabled="item.disabled"
+      >
+        {{ item.text.toUpperCase() }}
+      </v-breadcrumbs-item>
+    </template>
+  </v-breadcrumbs>
 </template>
 
 <script>
 export default {
-name: "Breadcrumbs",
-  data: () => ({
+  name: "Breadcrumbs",
+  data: () => ({}),
 
-  }),
-  props:{
-    breadcrumbsItemData:{
-      type:Array,
-      default(){
-        return{
+  props: {
+    breadcrumbsItemData: {
+      type: Array,
+      default() {
+        return {
           items: [
             {
               text: 'Dashboard',
@@ -33,16 +32,16 @@ name: "Breadcrumbs",
           ],
         }
 
-        }
       }
     }
+  }
 
 }
 
 </script>
 
 <style scoped>
-#bread{
+#bread {
   height: 5px;
   width: 100%;
 }
